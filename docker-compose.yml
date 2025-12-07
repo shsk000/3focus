@@ -1,0 +1,60 @@
+services:
+  # Backend (Go)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: 3focus-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - go-modules:/go/pkg/mod
+    environment:
+      - GO_ENV=development
+      - PORT=8080
+    command: air -c .air.toml
+    networks:
+      - 3focus-network
+
+  # Frontend (Vue)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: 3focus-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8080
+    command: npm run dev
+    networks:
+      - 3focus-network
+    depends_on:
+      - backend
+
+  # PostgreSQL Database (optional)
+  db:
+    image: postgres:16-alpine
+    container_name: 3focus-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=3focus
+      - POSTGRES_PASSWORD=3focus_dev
+      - POSTGRES_DB=3focus_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - 3focus-network
+
+volumes:
+  go-modules:
+  postgres-data:
+
+networks:
+  3focus-network:
+    driver: bridge
