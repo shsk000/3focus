@@ -13,7 +13,15 @@ services:
     environment:
       - GO_ENV=development
       - PORT=8080
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=3focus
+      - DB_PASSWORD=3focus_dev
+      - DB_NAME=3focus_db
+      - DB_SSLMODE=disable
     command: air -c .air.toml
+    depends_on:
+      - db
     networks:
       - 3focus-network
 
