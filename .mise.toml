@@ -69,3 +69,27 @@ run = "docker-compose stop"
 [tasks.ps]
 description = "Show running containers"
 run = "docker-compose ps"
+
+# Database tasks
+[tasks."db:init"]
+description = "Initialize database with schema"
+run = """
+docker-compose exec -T db psql -U 3focus -d 3focus_db < database/schema.sql
+echo "Database schema initialized successfully"
+"""
+
+[tasks."db:reset"]
+description = "Reset database and reinitialize schema"
+run = """
+docker-compose exec -T db psql -U 3focus -d 3focus_db -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+docker-compose exec -T db psql -U 3focus -d 3focus_db < database/schema.sql
+echo "Database reset and schema reinitialized"
+"""
+
+[tasks."db:shell"]
+description = "Open PostgreSQL shell"
+run = "docker-compose exec db psql -U 3focus -d 3focus_db"
+
+[tasks."db:status"]
+description = "Show database tables"
+run = "docker-compose exec db psql -U 3focus -d 3focus_db -c '\\dt'"
