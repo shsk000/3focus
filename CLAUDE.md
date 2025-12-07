@@ -4,12 +4,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-3focus is a full-stack web application with:
-- **Backend**: Go 1.21 with Gin web framework
+3focus is a **"Today's 3 Tasks Only"** mini ToDo application - a focus app that helps users commit to completing just 3 important tasks per day.
+
+**See [application-plan.md](./application-plan.md) for detailed application specifications and user flow.**
+
+### Tech Stack
+
+- **Backend**: Go 1.23 with Gin web framework
 - **Frontend**: Vue 3 with Vite build tool
 - **Database**: PostgreSQL 16
 - **Containerization**: Docker Compose for development environment
 - **Tool Management**: mise for version management
+
+### Application Concept
+
+- Users can register **maximum 3 tasks per day** with priority levels
+- Tasks are prioritized: ① Most important, ② Nice to have, ③ If time allows
+- Completion celebration with social sharing feature
+- Daily task history tracking
 
 ## Development Environment
 
@@ -46,7 +58,7 @@ The project uses mise for:
 
 Tool versions:
 - Node.js: 22.11.0
-- Go: 1.21
+- Go: 1.23
 
 Setup:
 ```bash
